@@ -34,12 +34,10 @@ end, { range = true })
 
 vim.keymap.set('v', 'gc', ":ToggleRbComment<cr>")
 
-local function setup_mappings_for_ruby(lsp_client_id)
-    vim.api.nvim_create_autocmd({'BufReadPost'}, {
+local function create_autocmd_and_mappings()
+    vim.api.nvim_create_autocmd({'FileType ruby'}, {
         pattern = {"*.rb"},
         callback = function(ev)
-            vim.lsp.buf_attach_client(0, lsp_client_id)
-
             vim.o.omnifunc = 'v:lua.vim.lsp.omnifunc'
             vim.o.tagfunc = 'v:lua.vim.lsp.tagfunc'
 
@@ -100,12 +98,11 @@ local function setup_mappings_for_ruby(lsp_client_id)
             vim.keymap.set('n', ']d', vim.diagnostic.goto_next, {
                 buffer = true
             })
-
-            print("Setted up")
         end
     })
 end
 
+-- TODO: use plugins to manage most of the gory details like everone else
 local function start_ruby_lsp()
     local config = {
         cmd = {'solargraph', 'stdio'},
@@ -122,8 +119,18 @@ local function start_ruby_lsp()
 
     local client_id = vim.lsp.start_client(config)
 
+
     if client_id then
-        setup_mappings_for_ruby(client_id)
+        create_autocmd_and_mappings()
+        local bufs = vim.api.nvim_list_bufs()
+
+        for _i, buf_id in pairs(bufs) do
+            if vim.api.nvim_buf_get_option(buf_id, "filetype") == "ruby" then
+                vim.lsp.buf_attach_client(buf_id, client_id)
+            end
+        end
+    else
+      print("Failed to launch server")
     end
 end
 

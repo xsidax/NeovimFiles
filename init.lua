@@ -14,6 +14,8 @@ vim.keymap.set('n', '<Leader>o', ':edit ')
 vim.keymap.set('n', '<Leader>q', ':q<CR> ')
 
 vim.cmd "filetype plugin indent on"
+
+-- TODO: disable caps lock on vim enter
 -- vim.cmd [[
 --     au VimEnter * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 --     au VimLeave * !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Caps_Lock'
