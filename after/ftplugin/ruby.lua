@@ -119,7 +119,6 @@ local function start_ruby_lsp()
 
     local client_id = vim.lsp.start_client(config)
 
-
     if client_id then
         create_autocmd_and_mappings()
         local bufs = vim.api.nvim_list_bufs()
@@ -134,4 +133,15 @@ local function start_ruby_lsp()
     end
 end
 
+local function stop_ruby_lsp()
+
+  for _i, client in pairs(vim.lsp.get_available_clients()) do
+    if client.name == "solargraph" then
+      vim.lsp.stop_client(client.id)
+      break
+    end
+  end
+end
+
 vim.api.nvim_create_user_command('LaunchRubyLsp', start_ruby_lsp, {})
+vim.api.nvim_create_user_command('StopRubyLsp', stop_ruby_lsp, {})
