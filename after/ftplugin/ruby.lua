@@ -134,13 +134,12 @@ local function start_ruby_lsp()
 end
 
 local function stop_ruby_lsp()
-
-  for _i, client in pairs(vim.lsp.get_available_clients()) do
-    if client.name == "solargraph" then
-      vim.lsp.stop_client(client.id)
-      break
+    for _i, client in pairs(vim.lsp.get_available_clients()) do
+        if client.name == "solargraph" then
+            vim.lsp.stop_client(client.id)
+            break
+        end
     end
-  end
 end
 
 vim.api.nvim_create_user_command('LaunchRubyLsp', start_ruby_lsp, {})
