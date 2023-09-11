@@ -35,8 +35,8 @@ end, { range = true })
 vim.keymap.set('v', 'gc', ":ToggleRbComment<cr>")
 
 local function create_autocmd_and_mappings()
-    vim.api.nvim_create_autocmd({'FileType ruby'}, {
-        pattern = {"*.rb"},
+    vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'ruby',
         callback = function(ev)
             vim.o.omnifunc = 'v:lua.vim.lsp.omnifunc'
             vim.o.tagfunc = 'v:lua.vim.lsp.tagfunc'
